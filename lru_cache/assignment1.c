@@ -12,7 +12,7 @@
 
 #include "assignment1.h"
 
-typedef struct {
+typedef struct pair{
   char* key;
   char* val;
   struct pair* next;
@@ -20,8 +20,12 @@ typedef struct {
   
 } pair;
 
-static pair* head = NULL;
+static struct pair* head = NULL;
 static int ll_size = 0;
+pair* new_pair(char* key, const char* value);
+void to_front(struct pair* pr);
+int free_pair(pair* pr);
+void print_cache();
 
 char* cache_get(const char* key) {
   return NULL;
@@ -35,6 +39,7 @@ void cache_set(const char* key, const char* value) {
 
   if(head == NULL)
   {
+    printf("Creating Cache\n");
     head = new_pair(key, value);
     ll_size = 1;
     return;
@@ -48,6 +53,7 @@ void cache_set(const char* key, const char* value) {
     //Key Match
     if(strcmp(key,  curr_pair->key) == 0)
     { 
+      printf("MATCH!\n");
       free(curr_pair->val);
       len_val = get_str_len(value);
       curr_pair->val = malloc(len_val*sizeof(char) + 1);
@@ -59,12 +65,17 @@ void cache_set(const char* key, const char* value) {
     //End of key-value pairs
     if(curr_pair->next == NULL && ll_size < 16)
     {
-      pair* new_pr;
+      printf("REACHED END OF PAIRS, INDEX: %d\n", ii);
+      struct pair* new_pr;
       new_pr = new_pair(key, value);
       to_front(new_pr);
       return;
     }
-  
+
+    if(curr_pair->next != NULL)
+      curr_pair = curr_pair->next;
+
+
   } 
   return;
 }
@@ -75,10 +86,10 @@ pair* new_pair(char* key, const char* value)
   size_t len_val;
   len_key = get_str_len(key);
   len_val = get_str_len(value);
-  pair* pr;
-  pr = malloc(sizeof(pair));
-  pr->key = malloc(len_key*sizeof(char) + 1);
-  pr->val = malloc(len_val*sizeof(char) + 1);
+  struct pair* pr;
+  pr = (struct pair*)malloc(sizeof(pair));
+  pr->key = (char*)malloc(len_key*sizeof(char) + 1);
+  pr->val = (char*)malloc(len_val*sizeof(char) + 1);
   strncpy(pr->key, key, len_key + 1);
   strncpy(pr->val, value, len_val + 1);
   pr->next = NULL;
@@ -87,15 +98,16 @@ pair* new_pair(char* key, const char* value)
   return pr;  
 }
 
-void to_front(pair* pr)
+void to_front(struct pair* pr)
 {
-  pair* tmp;
+  struct pair* tmp;
   if(pr->prev == NULL) // head
   {
     //do nothing
   }
   else if(pr->prev != NULL && pr->next != NULL) // mid body
   {
+    tmp = pr;
     tmp->next = pr->next;
     tmp->prev = pr->prev;
     
@@ -123,26 +135,7 @@ bool cache_del(const char* key) {
 
 void cache_clear(void) {
   printf("CACHE_CLEAR\n");
-  if(lru_cache != NULL)
-    free_heap(lru_cache);
-  else { printf("[free]: lru_cache is NULL\n"); }
   return;
-}
-
-int free_heap(heap_array* hp)
-{
-
-  if(hp == NULL){ printf("hp is NULL\n"); return 1; }
-
-  int ii;
-  for(ii = 0; ii < 16; ii++)
-  { 
-    if(hp->pairs[ii] != NULL)
-      if(!free_pair(hp->pairs[ii]))
-        return 0;
-  }
-  free(hp);
-  return 1;
 }
 
 int free_pair(pair* pr)
@@ -165,8 +158,29 @@ int get_str_len(char* str)
   return ii;
 }
 
-void print_heap(void)
+void print_cache()
 {
+
+  printf("Current Size: %d\n", ll_size);
+  struct pair* curr_pair;
+  curr_pair = head;
+  
+  int ii;
+  for(ii = 0; ii < 16; ii++)
+  {
+    if(curr_pair->next != NULL)
+    {
+      printf("INDEx:\t%d  KEY:\t\t%s", ii, curr_pair->key);
+      printf("\t\tVALUE:\t\t%s", curr_pair->key);
+      curr_pair = curr_pair->next;
+    }else
+    {
+      printf("INDEx:\t%d  KEY:\t\tNULL", ii);
+      printf("\t\tVALUE:\t\tNULL");
+    }
+    printf("\n");
+  }
+  
 
 }
 

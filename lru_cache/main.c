@@ -15,8 +15,7 @@ int main()
   cache_set("tesla2", "name");
   cache_set("tesla3", "is"); 
   cache_set("tesla4", "Jonas");
-  print_heap();
-  
+  print_cache();  
   //  cache_set("1", "my");
   //  cache_set("2", "name");
   //  cache_set("3", "is"); 

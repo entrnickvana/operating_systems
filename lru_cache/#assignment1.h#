@@ -6,7 +6,7 @@
 
 
 /**
- * cache_set stores a copy of the C string pointed to by `value` in the cache
+
  * associated with the C string pointed to by `key`. If `key` matches a key
  * already stored in the cache (via strcmp), then the value associated with it
  * in the cache then a copy of the C string pointed to by `value` replaces the
