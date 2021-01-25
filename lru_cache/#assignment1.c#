@@ -42,7 +42,7 @@ void cache_set(const char* key, const char* value) {
     printf("Creating Cache\n");
     head = new_pair(key, value);
     printf("HEAD KEY: %s  VAl:  %s\n", head->key, head->val);
-    ll_size = 1;
+    ll_size = 1;clea
     return;
   }
 
@@ -166,7 +166,7 @@ void print_cache()
     idx++;
     curr_pair = curr_pair->next;
   }  
-   printf("IDX:  %d  KEY:  %s   VAL:   %s\n", idx, curr_pair->key, curr_pair->val);
+
 }
 
 
