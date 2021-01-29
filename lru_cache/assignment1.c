@@ -34,8 +34,8 @@ static struct pair* head = NULL;
 static int ll_size = 0;
 pair* new_pair(char* key, const char* value);
 void to_front(struct pair* pr);
-int free_pair(pair* pr);
 void print_cache();
+int get_str_len(char* str);
 
 char* cache_get(const char* key) 
 {
@@ -62,7 +62,6 @@ char* cache_get(const char* key)
 void cache_set(const char* key, const char* value) {
   
   pair* curr_pair;
-  size_t len_key;
   size_t len_val;
 
   if(head == NULL)
@@ -94,23 +93,29 @@ void cache_set(const char* key, const char* value) {
       struct pair* new_pr;
       new_pr = new_pair(key, value);
       to_front(new_pr);
+      ll_size++;
       return;
     }
-
+    
+    //Add newest, Remove oldest value
+    if(curr_pair->next == NULL && ll_size == 16 && ii == 15)
+    {
+      //Delete oldest pair
+      free(curr_pair->key);  
+      free(curr_pair->val);  
+      curr_pair->prev->next = NULL;
+      free(curr_pair);
+      
+      //Add newest to front
+      pair* new_pr;
+      new_pr = new_pair(key, value);
+      to_front(new_pr);
+      return;
+    }
     curr_pair = curr_pair->next;
   } 
-    
-  //Delete oldest pair
-  free(curr_pair->key);  
-  free(curr_pair->val);  
-  curr_pair->prev->next = NULL;
-  free(curr_pair);
-  
-  //Add newest to front
-  pair* new_pr;
-  new_pr = new_pair(key, value);
-  to_front(new_pr);
-  ll_size++;
+
+  printf("Error on cache_set!\n");    
   return;
 }
 
@@ -128,7 +133,6 @@ pair* new_pair(char* key, const char* value)
   strncpy(pr->val, value, len_val + 1);
   pr->next = NULL;
   pr->prev = NULL;
-  ll_size++;
   return pr;  
 }
 
@@ -154,12 +158,20 @@ void to_front(struct pair* pr)
     head = pr;
     return;
   }
+  
+  if(pr->next == NULL && pr->prev != NULL)
+  {
+    pr->prev->next = NULL;
+    head->prev = pr;
+    pr->next = head;
+    head = pr;
+    return;
+  }
 }
 
 bool cache_del(const char* key) {
 
   struct pair* curr_pair;
-  char* val;
   curr_pair = head;
   while(curr_pair != NULL)
   {
@@ -168,6 +180,7 @@ bool cache_del(const char* key) {
       free(curr_pair->key);
       free(curr_pair->val);
       
+      //Head
       if(curr_pair == head)
       {
         free(head);
@@ -200,20 +213,33 @@ bool cache_del(const char* key) {
 }
 
 void cache_clear(void) {
-  return;
-}
 
-int free_pair(pair* pr)
-{
-  if(pr != NULL)
-  { 
-    if(pr->key != NULL) { free(pr->key);}
-    if(pr->val != NULL) { free(pr->val);}
-    free(pr);
+  printf("cache_clear\n");
+  struct pair* curr_pair;
+  curr_pair = head;
+   
+  while(curr_pair->next != NULL)
+  {
+    curr_pair = curr_pair->next;
+    free(curr_pair->prev->key);
+    free(curr_pair->prev->val);
+    curr_pair->prev->prev = NULL;
+    curr_pair->prev->next = NULL;
+    free(curr_pair->prev);
+    curr_pair->prev = NULL;
+    ll_size--;
   }
-  return 1;
+  
+  free(curr_pair->key);
+  free(curr_pair->val);
+  curr_pair->prev = NULL;
+  curr_pair->next = NULL;
+  free(curr_pair);
+  ll_size--;
+  head = NULL;
 
 }
+
 
 int get_str_len(char* str)
 {

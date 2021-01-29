@@ -1,5 +1,4 @@
 
-
 #include "assignment1.h"
 
 #include <stdlib.h>
@@ -60,8 +59,57 @@ int main()
   print_cache();
   cache_set("V", "Venasuar");
   print_cache();
+  printf("Cache_get = %s\n", cache_get("K"));
+  print_cache();
+  printf("Cache_get = %s\n", cache_get("J"));
+  print_cache();
+  cache_del("V");
+  print_cache();
+  cache_set("V", "Veep");
+  print_cache();
+  cache_set("W", "Wildebeast");
+  print_cache();
+  cache_clear();
+  print_cache();
 
+  cache_set("HHH", "Hippo1");
+  print_cache();
+  cache_set("III", "Iguana1");
+  print_cache();
+  cache_set("JJJ", "Jackal1");
+  print_cache();
+  cache_set("KKK", "Kangaroo1");
+  print_cache();
+  cache_set("LLL", "Lemur1");
+  print_cache();
+  cache_set("MMM", "Mongoose1");
+  print_cache();
+  cache_set("NNN", "Newt1");
+  print_cache();
+  cache_set("OOO", "Osprey1");
+  print_cache();
+  cache_set("PPP", "Panda1");
+  print_cache();
+  cache_set("QQQ", "Quail1");
+  print_cache();
+  cache_set("RRR", "Raptor1");
+  print_cache();
+  cache_set("SSS", "Swan1");
+  print_cache();
+  cache_set("TTT", "Tarantula1");
+  print_cache();
+  cache_set("UUU", "Urchin1");
+  print_cache();
+  cache_set("VVV", "Venasuar1");
 
+  cache_set("E", "Eagle");
+  print_cache();
+  cache_set("E", "Emu");
+  print_cache();
+  cache_set("F", "Fly");
+  print_cache();
+  cache_clear();
+  print_cache();
 
   return 0;
 }
