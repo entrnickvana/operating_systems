@@ -7,6 +7,22 @@
 
 int main()
 {
+  
+  //cache_set("A", "Alligator");
+  //cache_set("AA", "Arab");
+  //cache_set("B", "Black");
+  //cache_set("BB", "Blow Job");
+  //cache_del("AA");
+  //printf("cache_get A = %s\n",cache_get("A"));
+  //printf("cache_get BB = %s\n",cache_get("BB"));
+  //print_cache();
+  //
+  //cache_clear();
+  //print_cache();
+  //printf("cache_get A = %s\n",cache_get("A"));
+  //print_cache();
+
+  
   cache_set("A", "Alligator");
   print_cache();
   printf("cache_get A = %s\n",cache_get("A"));
@@ -106,9 +122,15 @@ int main()
   print_cache();
   cache_set("E", "Emu");
   print_cache();
-  cache_set("F", "Fly");
+  cache_set("FFFF", "Fly");
   print_cache();
   cache_clear();
+  printf("\nAAAA\n");
+  print_cache();
+  printf("\nBBB\n");
+  cache_set("FFFaB", "Flyer");
+  //printf("cache_get E = %s\n",cache_get("E"));
+  printf("cache_get FFFaB = %s\n",cache_get("FFFaB"));
   print_cache();
 
   return 0;

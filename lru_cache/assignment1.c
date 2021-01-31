@@ -32,35 +32,58 @@ typedef struct pair{
 
 static struct pair* head = NULL;
 static int ll_size = 0;
-pair* new_pair(char* key, const char* value);
+static int dbg = 1;
+pair* new_pair(const char* key, const char* value);
 void to_front(struct pair* pr);
 void print_cache();
-int get_str_len(char* str);
+int get_str_len(const char* str);
 
 char* cache_get(const char* key) 
 {
+  if(head == NULL) return NULL;
   
-  struct pair* curr_pair;
-  char* val;
-  curr_pair = head;
-  while(curr_pair != NULL)
+  struct pair* curr;
+  curr = head;
+  
+  while(curr != NULL)
   {
-    if(strcmp(key, curr_pair->key) == 0)
+    if(strcmp(key, curr->key) == 0)
     {
-      int len_val;
-      len_val = get_str_len(curr_pair->val);
-      val = malloc(len_val*sizeof(char) + 1);
-      strncpy(val, curr_pair->val, len_val + 1);
-      to_front(curr_pair);
-      return val;
+      int val_len = strlen(curr->val);
+      char* val_cpy;
+      val_cpy = malloc(val_len*sizeof(char) + 1);
+      strncpy(val_cpy, curr->val, val_len + 1);
+      to_front(curr);
+      return val_cpy;
     }
-    curr_pair = curr_pair->next;
+    curr = curr->next;
   }
   return NULL;
 }
 
+//char* cache_get(const char* key) 
+//{
+//
+//  struct pair* curr_pair;
+//  char* val;
+//  curr_pair = head;
+//  while(curr_pair != NULL)
+//  {
+//    if(strcmp(key, curr_pair->key) == 0)
+//    {
+//      int len_val;
+//      len_val = get_str_len(curr_pair->val);
+//      val = malloc(len_val*sizeof(char) + 1);
+//      strncpy(val, curr_pair->val, len_val + 1);
+//      to_front(curr_pair);
+//      return val;
+//    }
+//    curr_pair = curr_pair->next;
+//  }
+//  return NULL;
+//}
+
 void cache_set(const char* key, const char* value) {
-  
   pair* curr_pair;
   size_t len_val;
 
@@ -79,7 +102,7 @@ void cache_set(const char* key, const char* value) {
     //Key Match
     if(strcmp(key,  curr_pair->key) == 0)
     { 
-      free(curr_pair->val);
+      free((char*)curr_pair->val);
       len_val = get_str_len(value);
       curr_pair->val = malloc(len_val*sizeof(char) + 1);
       strncpy(curr_pair->val, value, len_val);
@@ -101,10 +124,10 @@ void cache_set(const char* key, const char* value) {
     if(curr_pair->next == NULL && ll_size == 16 && ii == 15)
     {
       //Delete oldest pair
-      free(curr_pair->key);  
-      free(curr_pair->val);  
+      free((char*)curr_pair->key);  
+      free((char*)curr_pair->val);  
       curr_pair->prev->next = NULL;
-      free(curr_pair);
+      free((char*)curr_pair);
       
       //Add newest to front
       pair* new_pr;
@@ -115,11 +138,11 @@ void cache_set(const char* key, const char* value) {
     curr_pair = curr_pair->next;
   } 
 
-  printf("Error on cache_set!\n");    
+  if(dbg) printf("Error on cache_set!\n");    
   return;
 }
 
-pair* new_pair(char* key, const char* value)
+pair* new_pair(const char* key, const char* value)
 {
   size_t len_key;
   size_t len_val;
@@ -136,8 +159,43 @@ pair* new_pair(char* key, const char* value)
   return pr;  
 }
 
+//void to_front(struct pair* pr)
+//{
+//  //if head
+//  if(pr->prev == NULL)
+//  {
+//    return;
+//  }
+//
+//  //if tail
+//  if(pr->next == NULL)
+//  {
+//    pr->prev->next = NULL;
+//    head->prev = pr;
+//    pr->next = head;
+//    pr->prev = NULL;
+//    head = pr;   
+//    return;
+//  }
+//
+//  //if body
+//  if(pr->next != NULL && pr->prev != NULL)
+//  {
+//    pr->prev->next = pr->next;
+//    pr->next->prev = pr->prev;
+//    head->prev = pr;
+//    pr->next = head;
+//    pr->prev = NULL;
+//    head = pr;
+//    return;
+//  }
+//
+//  printf("to_front error\n");
+//}
+
 void to_front(struct pair* pr)
 {
+
   if(pr->next == NULL && pr->prev == NULL)
   {
     head->prev = pr;
@@ -177,8 +235,8 @@ bool cache_del(const char* key) {
   {
     if(strcmp(key, curr_pair->key) == 0)
     {
-      free(curr_pair->key);
-      free(curr_pair->val);
+      free((char*)curr_pair->key);
+      free((char*)curr_pair->val);
       
       //Head
       if(curr_pair == head)
@@ -213,35 +271,62 @@ bool cache_del(const char* key) {
 }
 
 void cache_clear(void) {
-
-  printf("cache_clear\n");
-  struct pair* curr_pair;
-  curr_pair = head;
-   
-  while(curr_pair->next != NULL)
+  if(head == NULL) return;
+ 
+  struct pair* curr;
+  struct pair* nxt;
+  
+  curr = head;
+  while(curr->next != NULL)
   {
-    curr_pair = curr_pair->next;
-    free(curr_pair->prev->key);
-    free(curr_pair->prev->val);
-    curr_pair->prev->prev = NULL;
-    curr_pair->prev->next = NULL;
-    free(curr_pair->prev);
-    curr_pair->prev = NULL;
+    nxt = curr->next;
+    free((char*)curr->key);
+    free((char*)curr->val);
+    curr->key = NULL;
+    curr->val = NULL;
+    free((pair*)curr);
+    curr = nxt;
     ll_size--;
   }
-  
-  free(curr_pair->key);
-  free(curr_pair->val);
-  curr_pair->prev = NULL;
-  curr_pair->next = NULL;
-  free(curr_pair);
+
+  free((char*)curr->key);
+  free((char*)curr->val);
+  curr->key = NULL;
+  curr->val = NULL;
+  free((pair*)curr);
   ll_size--;
   head = NULL;
-
 }
 
+//void cache_clear(void) {
+//
+//  struct pair* curr_pair;
+//  curr_pair = head;
+//   
+//  while(curr_pair->next != NULL))
+//  {
+//    curr_pair = curr_pair->next;
+//    free((char*)curr_pair->prev->key);
+//    free((char*)curr_pair->prev->val);
+//    curr_pair->prev->prev = NULL;
+//    curr_pair->prev->next = NULL;
+//    free(curr_pair->prev);
+//    curr_pair->prev = NULL;
+//    ll_size--;
+//  }
+//  
+//  free((char*)curr_pair->key);
+//  free((char*)curr_pair->val);
+//  curr_pair->prev = NULL;
+//  curr_pair->next = NULL;
+//  free(curr_pair);
+//  ll_size--;
+//  head = NULL;
+//
+//}
 
-int get_str_len(char* str)
+
+int get_str_len(const char* str)
 {
   int ii;
   for(ii = 0; str[ii] != '\0'; ii++) {}
@@ -250,21 +335,29 @@ int get_str_len(char* str)
 
 void print_cache()
 {
-  printf("Current Size: %d\n", ll_size);
-  if(head == NULL) {printf("Empty Cache\n"); return;}
-  struct pair* curr_pair;
-  curr_pair = head;
-
+  if(head == NULL)
+  {
+    printf("Cache is empty, SIZE = %d\n", ll_size);
+    return;
+  }
+  
+  struct pair* curr;
+  curr = head;
+  printf("SIZE = %d\n", ll_size);
+  printf("HEAD: Key = %s, Val = %s\n", head->key, head->val);
 
   int idx;
   idx = 0;
-  while(curr_pair->next != NULL && idx < 16)
+  while(curr != NULL)
   {
-    printf("IDX:  %d  KEY:  %s   VAL:   %s\n", idx, curr_pair->key, curr_pair->val);
+    printf("IDX: %d\t\t CURR: Key = %s, Val = %s\n", idx, curr->key, curr->val);    
     idx++;
-    curr_pair = curr_pair->next;
-  }  
-   printf("IDX:  %d  KEY:  %s   VAL:   %s\n", idx, curr_pair->key, curr_pair->val);
+    curr = curr->next;
+  }
+  printf("\n\n\n");
+  return;
 }
+
+
 
 
