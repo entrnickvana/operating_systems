@@ -109,7 +109,7 @@ void cache_set(const char* key, const char* value) {
       to_front(curr_pair);
       return;
     }
-
+    
     //End of key-value pairs
     if(curr_pair->next == NULL && ll_size < 16)
     {
@@ -135,7 +135,7 @@ void cache_set(const char* key, const char* value) {
       to_front(new_pr);
       return;
     }
-    curr_pair = curr_pair->next;
+     curr_pair = curr_pair->next;
   } 
 
   if(dbg) printf("Error on cache_set!\n");    
@@ -270,60 +270,45 @@ bool cache_del(const char* key) {
   return false;
 }
 
-void cache_clear(void) {
-  if(head == NULL) return;
- 
-  struct pair* curr;
-  struct pair* nxt;
-  
-  curr = head;
-  while(curr->next != NULL)
-  {
-    nxt = curr->next;
-    free((char*)curr->key);
-    free((char*)curr->val);
-    curr->key = NULL;
-    curr->val = NULL;
-    free((pair*)curr);
-    curr = nxt;
-    ll_size--;
-  }
 
-  free((char*)curr->key);
-  free((char*)curr->val);
-  curr->key = NULL;
-  curr->val = NULL;
-  free((pair*)curr);
-  ll_size--;
-  head = NULL;
+void cache_clear(void) {
+
+  while(head != NULL)
+    cache_del(head->key);
+  
 }
 
 //void cache_clear(void) {
-//
-//  struct pair* curr_pair;
-//  curr_pair = head;
-//   
-//  while(curr_pair->next != NULL))
+//  if(head == NULL) return;
+// 
+//  struct pair* curr;
+//  struct pair* nxt;
+//  
+//  curr = head;
+//  while(curr->next != NULL)
 //  {
-//    curr_pair = curr_pair->next;
-//    free((char*)curr_pair->prev->key);
-//    free((char*)curr_pair->prev->val);
-//    curr_pair->prev->prev = NULL;
-//    curr_pair->prev->next = NULL;
-//    free(curr_pair->prev);
-//    curr_pair->prev = NULL;
+//    nxt = curr->next;
+//    free((char*)curr->key);
+//    free((char*)curr->val);
+//    free((pair*)curr);
+//    curr = nxt;
 //    ll_size--;
 //  }
-//  
-//  free((char*)curr_pair->key);
-//  free((char*)curr_pair->val);
-//  curr_pair->prev = NULL;
-//  curr_pair->next = NULL;
-//  free(curr_pair);
+//
+//  free((char*)curr->key);
+//  free((char*)curr->val);
+//  free((pair*)curr);
 //  ll_size--;
 //  head = NULL;
-//
 //}
+
+
+
+
+
+
+
+
 
 
 int get_str_len(const char* str)
@@ -350,7 +335,7 @@ void print_cache()
   idx = 0;
   while(curr != NULL)
   {
-    printf("IDX: %d\t\t CURR: Key = %s, Val = %s\n", idx, curr->key, curr->val);    
+    printf("IDX:\t%d\t\tKey:\t%s\t\t\tVal:\t%s\n", idx, curr->key, curr->val);    
     idx++;
     curr = curr->next;
   }

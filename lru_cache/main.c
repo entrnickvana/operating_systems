@@ -7,28 +7,15 @@
 
 int main()
 {
-  
-  //cache_set("A", "Alligator");
-  //cache_set("AA", "Arab");
-  //cache_set("B", "Black");
-  //cache_set("BB", "Blow Job");
-  //cache_del("AA");
-  //printf("cache_get A = %s\n",cache_get("A"));
-  //printf("cache_get BB = %s\n",cache_get("BB"));
-  //print_cache();
-  //
-  //cache_clear();
-  //print_cache();
-  //printf("cache_get A = %s\n",cache_get("A"));
-  //print_cache();
 
-  
+  cache_clear();
+  printf("Clear 1 passed\n");
+  cache_clear();
+  printf("Clear 2 passed\n");
+
+  return 1;
   cache_set("A", "Alligator");
   print_cache();
-  printf("cache_get A = %s\n",cache_get("A"));
-  cache_del("A");
-  print_cache();
-
   cache_set("B", "Bat");
   print_cache();
   cache_set("C", "Cat");
@@ -75,63 +62,46 @@ int main()
   print_cache();
   cache_set("V", "Venasuar");
   print_cache();
-  printf("Cache_get = %s\n", cache_get("K"));
+
+  //Now full, try to break with get
+  printf("cache_get:\t\tQ\t\t%s\n", cache_get("Q"));
   print_cache();
-  printf("Cache_get = %s\n", cache_get("J"));
-  print_cache();
-  cache_del("V");
-  print_cache();
-  cache_set("V", "Veep");
-  print_cache();
-  cache_set("W", "Wildebeast");
+  printf("cache_get:\t\tH\t\t%s\n", cache_get("H"));
   print_cache();
   cache_clear();
   print_cache();
 
-  cache_set("HHH", "Hippo1");
+  cache_set("Q", "Quail");
+  cache_set("R", "Raptor");
+  cache_set("S", "Swan");
+  cache_set("T", "Tarantula");
+  cache_set("U", "Urchin");
+  cache_set("V", "Venasuar");
   print_cache();
-  cache_set("III", "Iguana1");
+  cache_del("R");
+  cache_del("S"); 
   print_cache();
-  cache_set("JJJ", "Jackal1");
-  print_cache();
-  cache_set("KKK", "Kangaroo1");
-  print_cache();
-  cache_set("LLL", "Lemur1");
-  print_cache();
-  cache_set("MMM", "Mongoose1");
-  print_cache();
-  cache_set("NNN", "Newt1");
-  print_cache();
-  cache_set("OOO", "Osprey1");
-  print_cache();
-  cache_set("PPP", "Panda1");
-  print_cache();
-  cache_set("QQQ", "Quail1");
-  print_cache();
-  cache_set("RRR", "Raptor1");
-  print_cache();
-  cache_set("SSS", "Swan1");
-  print_cache();
-  cache_set("TTT", "Tarantula1");
-  print_cache();
-  cache_set("UUU", "Urchin1");
-  print_cache();
-  cache_set("VVV", "Venasuar1");
 
-  cache_set("E", "Eagle");
+  printf("cache_get:\t\tQ\t\t%s\n", cache_get("Q"));
+  printf("cache_get:\t\tU\t\t%s\n", cache_get("U"));
   print_cache();
-  cache_set("E", "Emu");
+
+  cache_set("I", "Iguana");
+  cache_set("J", "Jackal");
+  cache_set("K", "Kangaroo");
+  cache_set("L", "Lemur");
+  cache_set("M", "Mongoose");
+  cache_set("N", "Newt");
+  cache_set("O", "Osprey");
+  cache_set("P", "Panda");
+  cache_set("Q", "Quail");
+  cache_set("R", "Raptor");
+  cache_set("S", "Swan");
+  cache_set("T", "Tarantula");
+  cache_set("U", "Urchin");
+  cache_set("V", "Venasuar");
   print_cache();
-  cache_set("FFFF", "Fly");
-  print_cache();
-  cache_clear();
-  printf("\nAAAA\n");
-  print_cache();
-  printf("\nBBB\n");
-  cache_set("FFFaB", "Flyer");
-  //printf("cache_get E = %s\n",cache_get("E"));
-  printf("cache_get FFFaB = %s\n",cache_get("FFFaB"));
-  print_cache();
+
 
   return 0;
 }
