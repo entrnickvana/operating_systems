@@ -12,16 +12,6 @@
 
 #include "assignment1.h"
 
-/* //TODO
-* 1)  cache_del implementation 
-* 2)  pop oldest pair
-* 3)
-* 4)
-* 5)
-* 6)
-* 7)
-*/
-
 typedef struct pair{
   char* key;
   char* val;
@@ -32,7 +22,6 @@ typedef struct pair{
 
 static struct pair* head = NULL;
 static int ll_size = 0;
-static int dbg = 1;
 pair* new_pair(const char* key, const char* value);
 void to_front(struct pair* pr);
 void print_cache();
@@ -60,28 +49,6 @@ char* cache_get(const char* key)
   }
   return NULL;
 }
-
-//char* cache_get(const char* key) 
-//{
-//
-//  struct pair* curr_pair;
-//  char* val;
-//  curr_pair = head;
-//  while(curr_pair != NULL)
-//  {
-//    if(strcmp(key, curr_pair->key) == 0)
-//    {
-//      int len_val;
-//      len_val = get_str_len(curr_pair->val);
-//      val = malloc(len_val*sizeof(char) + 1);
-//      strncpy(val, curr_pair->val, len_val + 1);
-//      to_front(curr_pair);
-//      return val;
-//    }
-//    curr_pair = curr_pair->next;
-//  }
-//  return NULL;
-//}
 
 void cache_set(const char* key, const char* value) {
   pair* curr_pair;
@@ -137,8 +104,6 @@ void cache_set(const char* key, const char* value) {
     }
      curr_pair = curr_pair->next;
   } 
-
-  if(dbg) printf("Error on cache_set!\n");    
   return;
 }
 
@@ -158,40 +123,6 @@ pair* new_pair(const char* key, const char* value)
   pr->prev = NULL;
   return pr;  
 }
-
-//void to_front(struct pair* pr)
-//{
-//  //if head
-//  if(pr->prev == NULL)
-//  {
-//    return;
-//  }
-//
-//  //if tail
-//  if(pr->next == NULL)
-//  {
-//    pr->prev->next = NULL;
-//    head->prev = pr;
-//    pr->next = head;
-//    pr->prev = NULL;
-//    head = pr;   
-//    return;
-//  }
-//
-//  //if body
-//  if(pr->next != NULL && pr->prev != NULL)
-//  {
-//    pr->prev->next = pr->next;
-//    pr->next->prev = pr->prev;
-//    head->prev = pr;
-//    pr->next = head;
-//    pr->prev = NULL;
-//    head = pr;
-//    return;
-//  }
-//
-//  printf("to_front error\n");
-//}
 
 void to_front(struct pair* pr)
 {
@@ -277,39 +208,6 @@ void cache_clear(void) {
     cache_del(head->key);
   
 }
-
-//void cache_clear(void) {
-//  if(head == NULL) return;
-// 
-//  struct pair* curr;
-//  struct pair* nxt;
-//  
-//  curr = head;
-//  while(curr->next != NULL)
-//  {
-//    nxt = curr->next;
-//    free((char*)curr->key);
-//    free((char*)curr->val);
-//    free((pair*)curr);
-//    curr = nxt;
-//    ll_size--;
-//  }
-//
-//  free((char*)curr->key);
-//  free((char*)curr->val);
-//  free((pair*)curr);
-//  ll_size--;
-//  head = NULL;
-//}
-
-
-
-
-
-
-
-
-
 
 int get_str_len(const char* str)
 {
